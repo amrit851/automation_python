@@ -19,15 +19,6 @@ def change_notepad_mount_clipboard(filename,bu=-1,date=-1, case_num=-1):
 		print ("No messages of DATACLEAR request","change_note")
 		os._exit(1)
 
-	# if bu == -1:
-	# 	print ("From change_notepad: No message of DATACLEAR request")
-	# 	os._exit(1)
-
-	# # replace intital case number (first mentioned in line 5) with the extracted case num
-	# # initial_casenum = re.findall(r"--\d+",s)[0][2:]
-	# # s = s.replace(initial_casenum,"119999")
-	# # print (s)
-
 	# f = re.findall(r"'(.+?)'",text)
 	# initial_bu = f[0]
 	# initial_sf_num = f[1]
