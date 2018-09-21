@@ -7,10 +7,11 @@ Edit the locally saved script
 
 Paste That Script into SQL server Management Studio in Remote Desktop  
 Connection(virtual machine). Execute the Script, and see for 3 result among :-  
--     Error Message
--     No Go day posted
--     None of the above
-    
+'''
+~ Error Message
+~ No Go day posted
+~ None of the above
+''' 
 
 Post Update accordingly to the customer in salesforce
 Now loop for the customer's reply and identify its intent, whether the customer is happy or not and make python reply accordingly
