@@ -252,8 +252,9 @@ def close_case():
 
 def save_source(file):
 	"""
-		I failed to extract page source code with bs4,
-		beautifulSoup. This function extracts source
+		I failed to extract page (which comes after login
+		authentication and redirection ) source code with 
+		bs4, beautifulSoup. This function extracts source
 		code in "file" path by inspecting page. Function 
 		works only with Google Chrome Browser and only on 
 		test.salesforce.com lightining app version.
@@ -320,7 +321,12 @@ def reply(customer_reply):
 	return customer_reply, good
 
 def post_update(comment, fromcustom = False):
-	
+	"""
+		Works only if salesforce lightning app version is visible on the screen.
+		Clicks on POST and types update and also replies to the customer response.
+		Also invokes change_owner() or close_case() according to the positive/negative
+		reply from the customer.
+	"""
 	find_click_image('img\\sanbox_operations.PNG',arg_clicks=1 , arg_confidence=0.9)
 	time.sleep(2)
 	find_click_image('img\\post.PNG', arg_confidence=0.9)
@@ -357,11 +363,20 @@ def post_update(comment, fromcustom = False):
 	save_source('page0.html')
 
 def get_dataclear_case():
+	"""
+		Function works only in the page which contains
+		case queue. Scrapes code and Find the "dataclear"
+		subject.
+	"""
 	save_source('case_scrap.html')
 	file = 'case_scrap.html'
 	f = open(file,'r' ,encoding='utf-8', errors='ignore')
 
-
+	"""
+		Reading directly the source code (f.read()) ocassionally gave
+		UnicodeDecodeError but not always. So a loop is run continuosly
+		till the error doesn't came then breaks.
+	"""
 	again = True
 	while again:
 		again = False
@@ -375,6 +390,7 @@ def get_dataclear_case():
 	print (page.title.text)
 
 
+	# finding the table, iterating each cell in every row(cells) of table
 	first = True
 	table = page.findAll('tr')
 	for i in range(1,len(table)):
@@ -387,6 +403,11 @@ def get_dataclear_case():
 				return case
 
 def get_dataclear_subj():
+	"""
+		Function works only in the page which appears after
+		any case is clicked. Scrapes code and finds the subject
+		and returns it.
+	"""
 	save_source('dataclear_page.html')
 	file =  'dataclear_page.html'
 	f = open(file,'r',encoding='utf-8', errors='ignore')
@@ -402,12 +423,18 @@ def get_dataclear_subj():
 	f.close()
 	page = soup(raw_html, features = "html.parser")
 
+	# Itearting through every header
 	for x in page.findAll('h1'):
 		ans = x.text.strip()
 		if "dataclear" in ans.lower():
 			return ans
 
 def parse_mail_subject(subject):
+	"""
+		Takes the Subject returned from the case page
+		and returns the date and BU number separately 
+		in the desired format.
+	"""
 	if not subject:
 		return -1,-1
 	line = [s.strip() for s in subject.split('-')]
