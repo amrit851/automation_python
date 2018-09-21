@@ -328,7 +328,7 @@ def dnc(message, life=2):
 
 	w, h  = ws//3.5, hs//6,
 	x, y = w//5, hs-2*h
-	root.title("JDA Heisenberg")
+	root.title("JDA Richi")
 	# set the dimensions of the screen and where it is placed
 	root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 	# root.geometry("700x200")
@@ -707,7 +707,7 @@ def main1(bu,subj):
 
 	else:
 		print ("checking redprairie\n")
-		dnc("Heisenberg doing UI Validation")
+		dnc("Richi doing UI Validation")
 		# check_redprairie(x[0],x[1])
 		dnc("Data Cleared")
 		pgui.keyDown('alt')
