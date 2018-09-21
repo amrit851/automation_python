@@ -1,6 +1,6 @@
 from pywinauto import application
 from bs4 import BeautifulSoup as soup
-import pyautogui as pgui, datetime, sys, time, clipboard, cred, keyboard, random, os, tkinter as tk
+import pyautogui as pgui, datetime, time, clipboard, cred, keyboard, random, os, tkinter as tk
 
 
 def change_notepad_mount_clipboard(filename,bu=-1,date=-1, case_num=-1):
@@ -14,47 +14,29 @@ def change_notepad_mount_clipboard(filename,bu=-1,date=-1, case_num=-1):
 		text = text.replace("Business Unit Name",bu.strip().split()[1] )
 		# text = text.replace("Business Unit Name",  )
 		text = text.replace("<Business Date>","02/07/2018")  # mm/dd/yyy
-		text  = text.replace("SF<Case Number>","SF"+case_num+"_43")
+		text  = text.replace("SF<Case Number>","SF"+case_num+"_45")
 	else:
 		print ("No messages of DATACLEAR request","change_note")
 		os._exit(1)
-
-	# f = re.findall(r"'(.+?)'",text)
-	# initial_bu = f[0]
-	# initial_sf_num = f[1]
-	# initial_case_num = f[2]
-	# initial_date = f[3]
-	
-	# text = text.replace(initial_bu, bu)
-	# text = text.replace(initial_sf_num, sf_num)
-	# text = text.replace(initial_case_num, case_num)
-	# text = text.replace(initial_date, date)
 	return text
 
 def find_click_image(name, timeout = 45, arg_clicks=2, arg_interval=0.005, arg_button = 'left', x_off = 0, y_off = 0,arg_confidence=0.8):
 	b, timedOut = None, False
 	start = datetime.datetime.now()
-	# print ()
-	# print (start.minute*60 + start.second, name)
+	
 	while not b:
-		# print ("andar aaya")
 		# CAUTION CAUTION CAUTION
 		# Do not make confidence value as 1
 		b = pgui.locateCenterOnScreen(name,grayscale = True, confidence=arg_confidence)
 
 		end = datetime.datetime.now()
-		# print (end,)
-		# print (end.minute*60 + end.second)
-
 		if (( end.minute*60 + end.second)-(start.minute*60 + start.second)) > timeout:
 			timedOut = True
 			break
 
 	if timedOut:
-		print ("Image ",name , "Not Found : TimedOut ERROR")
-		sys.exit(1)
+		print ("Image ",name , "Not Found for clicking: TimedOut ERROR")
 		os._exit(1)
-		return
 	print ("Clicked: ", name)
 	pgui.click(x=b[0]+x_off, y=b[1]+y_off, clicks=arg_clicks, interval=arg_interval, button=arg_button)
 
@@ -62,28 +44,23 @@ def find_image(name, timeout = 45,arg_confidence=0.65):
 	b, timedOut = None, False
 	start = datetime.datetime.now()
 	ss = start.minute*60 + start.second
-	# print ()
-	# print (ss, name)
 	while not b:
-		# print("aaya andar\n")
 		# CAUTION CAUTION CAUTION
 		# Do not make confidence value as 1
 		b = pgui.locateCenterOnScreen(name,grayscale = True, confidence=arg_confidence)
-		# print (name , " at " , b)
 		end = datetime.datetime.now()
 		es = end.minute*60 + end.second
-		# print (es)
+
 		if (es-ss) > timeout:
 			timedOut = True
 			break
 			break
 	if timedOut and not b:
 		print ("Image", name ," Not Found : TimedOut ERROR")
-		sys.exit(1)
 		os._exit(1)
 
 def find_any_click( image_array ):
-	""" array contains chuck of three where 1st is image name and 2nd and 3rd are c_off and y_off respectively """
+	""" array contains chunck of three elements where 1st is image name and 2nd and 3rd are c_off and y_off respectively """
 	if not image_array:
 		print ("No image given in find_any_click().... code exit")
 		os._exit(1)
@@ -171,10 +148,7 @@ def save_source(file):
 	f.close()
 
 def reply(n):
-	# if n==-1:
-	# 	n = "Bye ! Have a good day !"
-	# 	print ("JDA:-->        ", n)
-	# 	return
+
 	n = n.lower()
 
 	poss = ["close", "closure", "resolved", "thanks!!","thank", "resolve"]
@@ -204,14 +178,7 @@ def reply(n):
 	return n, good
 
 def post_update(comment, fromcustom = False):
-	# pgui.hotkey('win','d')
-	# if fromcustom:
-	# 	time.sleep(2)
-	# 	pgui.hotkey('alt','tab')
-	# 	find_image('img\\home_sf_loaded.PNG')
-	# 	find_image('img\\home_sf.PNG')
-	# 	find_image('img\\home_sf_loaded.PNG')
-
+	
 	find_click_image('img\\sanbox_operations.PNG',arg_clicks=1 , arg_confidence=0.9)
 	time.sleep(2)
 	find_click_image('img\\post.PNG', arg_confidence=0.9)
@@ -269,7 +236,6 @@ def get_dataclear_case():
 	first = True
 	table = page.findAll('tr')
 	for i in range(1,len(table)):
-		# for data in row.findAll('td'):
 		row = table[i]
 		case = (row.find('th').text.strip())
 		cells = row.findAll('td')
@@ -303,7 +269,6 @@ def parse_mail_subject(subject):
 	if not subject:
 		return -1,-1
 	line = [s.strip() for s in subject.split('-')]
-	# print(line)
 
 	bu = line[1][:2].upper() + " " +  line[1][2:].strip()
 	
@@ -321,12 +286,13 @@ def parse_mail_subject(subject):
 
 def dnc(message, life=2):
 	""" display message and close after life ends """
+	
 	root = tk.Tk()
 	# get screen width and height
 	ws = root.winfo_screenwidth() # width of the screen
 	hs = root.winfo_screenheight() # height of the screen
 
-	w, h  = ws//3.5, hs//6,
+	w, h  = ws//3.5, hs//6
 	x, y = w//5, hs-2*h
 	root.title("JDA Richi")
 	# set the dimensions of the screen and where it is placed
@@ -492,7 +458,7 @@ def salesforceScrape():
 	# marks first response
 	# find_click_image('img\\milestones.PNG', arg_clicks = 0)
 	# pgui.scroll(-200)
-	time.sleep(1)
+	time.sleep(2)
 	find_click_image('img\\first_response.PNG',y_off=42)
 	time.sleep(4)
 
@@ -598,7 +564,7 @@ def check_redprairie(bu, date):
 		post_update("Dataclear Script ran, but still data Exists, please look into it.")
 		change_owner()
 		print("DATA NOT CLEARED")
-		sys.exit(1)
+		os._exit(1)
 
 	# if image_exists('img\\no_data.PNG'):   # no data in the checksum validation 
 	# 	# ideal thing to happen
@@ -620,7 +586,7 @@ def main1(bu,subj):
 
 
 	case = ret[1]	
-	print(x[0],x[1])
+	# print(x[0],x[1])
 	bu.append(x[0])
 	subj.append(x[1])
 
@@ -629,7 +595,7 @@ def main1(bu,subj):
 	text = change_notepad_mount_clipboard(filename,bu = x[0] , date = x[1], case_num = case)
 	clipboard.copy(text)
 
-	print (text)
+	# print (text)
 	
 	app = application.Application()
 	pgui.hotkey('win','d')
@@ -686,7 +652,7 @@ def main1(bu,subj):
 	if image_exists('img\\red_msg.PNG'):
 		print("Error in executing the script , please check")
 		dnc ("Script Execution Error")
-		sys.exit(1)
+		os._exit(1)
 	elif image_exists('img\\no_go.PNG'):
 		print ("No go is there")	
 		dnc("Day already posted")
@@ -699,9 +665,6 @@ def main1(bu,subj):
 		dnc ("Updating Customer: Day is already posted")
 		post_update("The day is posted and data will not be cleared. Thank you")
 	
-		# time.sleep(2)
-		# pgui.hotkey('alt','tab')
-		# time.sleep(2)
 		dnc("Proceeding to monitor Customer Response")
 		post_update(check_change(), fromcustom = True)
 
@@ -711,19 +674,15 @@ def main1(bu,subj):
 		# check_redprairie(x[0],x[1])
 		dnc("Data Cleared")
 		pgui.keyDown('alt')
-		pgui.hotkey('tab','tab')
+		# pgui.hotkey('tab','tab')                        # uncomment this line and comment below line if check_redprairie function is uncommented	
+		pgui.hotkey('tab')
 		pgui.keyUp('alt')
 		post_update("Hello Team, The Data for the Business Date: " + x[1] +" has been cleared. Please verify and confirm case closure. Thank you")
 		print  ("DATA CLEARED")
-		# time.sleep(2)
-		# pgui.hotkey('alt','tab')
-		# time.sleep(2)
 		post_update(check_change(), fromcustom = True)
 		os._exit(1)
 		
 
 if __name__ == "__main__":
 	subj, bu = [], []
-	# main1(bu, subj)
-
-	# close_case()
+	main1(bu, subj)
