@@ -236,7 +236,7 @@ def close_case():
 		pgui.scroll(-200)
 	find_image('img\\category.PNG')
 	find_click_image('img\\category.PNG', arg_confidence=0.9)
-	keyboard.write('DATA')
+	keyboard.write('data')
 	time.sleep(2)
 	find_image('img\\data_bhavana.PNG')
 	find_click_image('img\\data_bhavana.PNG', arg_confidence = 0.9, arg_clicks = 1)
@@ -760,12 +760,12 @@ def main1(bu,subj):
 		post_update(check_change(), fromcustom = True)
 
 	else:
-		print ("checking redprairie\n")
-		dnc("Richi doing UI Validation")
+		# print ("checking redprairie\n")
+		# dnc("Richi doing UI Validation")
 		# check_redprairie(x[0],x[1])
 		dnc("Data Cleared")
 		pgui.keyDown('alt')
-		# pgui.hotkey('tab','tab')                        # uncomment this line and comment below line if check_redprairie function is uncommented	
+		# pgui.hotkey('tab','tab') # uncomment this line and comment below line if check_redprairie function is uncommente	d
 		pgui.hotkey('tab')
 		pgui.keyUp('alt')
 		post_update("Hello Team, The Data for the Business Date: " + x[1] +" has been cleared. Please verify and confirm case closure. Thank you")
